@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>বিল আন্দাজ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@500;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one-column phone app. Bottom tab bar switches between four panels.
+   Signature pieces: a meter-drum odometer for units used, and a slab ladder that shows where you stand among the rate steps. */
+:root {
+  --bg: #EDF1F4;
+  --surface: #FFFFFF;
+  --ink: #15222C;
+  --muted: #566673;
+  --line: #D3DCE2;
+  --elec: #B87D00;
+  --elec-fill: #FFC933;
+  --gas: #1D6AAE;
+  --good: #1B7F55;
+  --warn: #B4400E;
+  --drum: #16222B;
+  --drum-ink: #F2F6F8;
+  --drum-red: #E5484D;
+  --focus: #1D6AAE;
+  --seg1: #FFF0BF; --seg2: #FFE285; --seg3: #FFD04D; --seg4: #FFB91A; --seg5: #F29A00; --seg6: #CC7000;
+  --segt1: #2A1D00; --segt2: #2A1D00; --segt3: #2A1D00; --segt4: #2A1D00; --segt5: #2A1D00; --segt6: #2A1D00;
+  --font-display: 'Anek Bangla', 'Hind Siliguri', 'Noto Sans Bengali', system-ui, sans-serif;
+  --font-body: 'Hind Siliguri', 'Noto Sans Bengali', 'Kalpurush', system-ui, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.25rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E161C;
+    --surface: #16212A;
+    --ink: #E6EDF1;
+    --muted: #8DA0AD;
+    --line: #25343E;
+    --elec: #FFC933;
+    --elec-fill: #FFC933;
+    --gas: #6FB4EE;
+    --good: #4CC38A;
+    --warn: #F08A5D;
+    --drum: #070C10;
+    --drum-ink: #F2F6F8;
+    --focus: #6FB4EE;
+    --seg1: #2E2710; --seg2: #4A3C10; --seg3: #6E5410; --seg4: #7C5D08; --seg5: #D49A06; --seg6: #FFC933;
+    --segt1: #FFE9A8; --segt2: #FFE9A8; --segt3: #FFE9A8; --segt4: #FFE9A8; --segt5: #2A1D00; --segt6: #2A1D00;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E161C;
+  --surface: #16212A;
+  --ink: #E6EDF1;
+  --muted: #8DA0AD;
+  --line: #25343E;
+  --elec: #FFC933;
+  --elec-fill: #FFC933;
+  --gas: #6FB4EE;
+  --good: #4CC38A;
+  --warn: #F08A5D;
+  --drum: #070C10;
+  --drum-ink: #F2F6F8;
+  --focus: #6FB4EE;
+  --seg1: #2E2710; --seg2: #4A3C10; --seg3: #6E5410; --seg4: #7C5D08; --seg5: #D49A06; --seg6: #FFC933;
+  --segt1: #FFE9A8; --segt2: #FFE9A8; --segt3: #FFE9A8; --segt4: #FFE9A8; --segt5: #2A1D00; --segt6: #2A1D00;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  padding-block: 16px 108px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-text-size-adjust: 100%;
+}
+.wrap { max-width: 560px; margin: 0 auto; display: grid; gap: 16px; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 800; line-height: 1.2; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; line-height: 1.3; text-wrap: balance; }
+h3 { font-family: var(--font-display); font-size: var(--fs-base); font-weight: 700; }
+.sub, .note { font-size: var(--fs-sm); color: var(--muted); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; padding-top: 8px; }
+.stamp {
+  font-size: var(--fs-xs); line-height: 1.35; color: var(--muted); text-align: right;
+  border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; flex: none;
+}
+
+.panel { display: grid; gap: 16px; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  padding: 16px; display: grid; gap: 14px; min-width: 0;
+}
+.out { display: grid; gap: 16px; min-width: 0; }
+.row2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.field { min-width: 0; }
+.field label { display: block; font-size: var(--fs-sm); color: var(--muted); margin-bottom: 4px; }
+.field input, .rin input {
+  width: 100%; min-width: 0; height: 48px; padding: 0 12px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 1.125rem; font-weight: 500;
+}
+.field input[type="date"] { font-size: 1rem; }
+
+.seg {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 3px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 3px;
+}
+.seg button {
+  border: 0; background: transparent; color: var(--muted); height: 40px; border-radius: 8px;
+  font-family: var(--font-body); font-size: 0.9375rem; font-weight: 600; cursor: pointer; padding: 0 8px;
+}
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+
+.btn {
+  height: 48px; border-radius: 10px; border: 0; background: var(--ink); color: var(--bg);
+  font-family: var(--font-body); font-size: var(--fs-base); font-weight: 700; cursor: pointer; padding: 0 16px;
+}
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn.danger { color: var(--warn); }
+
+.chip { display: inline-block; font-size: var(--fs-xs); font-weight: 600; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.err { color: var(--warn); font-weight: 600; }
+
+/* odometer */
+.drum-wrap { display: grid; gap: 6px; justify-items: start; }
+.drum { display: flex; gap: 3px; }
+.drum span {
+  width: 36px; height: 52px; display: grid; place-items: center;
+  background: var(--drum); color: var(--drum-ink); border-radius: 5px;
+  font-family: var(--font-display); font-size: 1.75rem; font-weight: 700;
+  box-shadow: inset 0 -14px 14px -14px rgba(255,255,255,0.28), inset 0 14px 14px -14px rgba(0,0,0,0.6);
+}
+.drum span.tenth { background: var(--drum-red); color: #fff; margin-left: 3px; }
+.cap { font-size: var(--fs-sm); color: var(--muted); }
+
+.kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.kpi { min-width: 0; }
+.kpi .v { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 800; line-height: 1.2; overflow-wrap: anywhere; }
+.kpi.big .v { color: var(--elec); }
+.kpi .l { font-size: var(--fs-sm); color: var(--muted); }
+.kpi .s { font-size: var(--fs-xs); color: var(--muted); }
+.kpi.gas .v { color: var(--gas); }
+
+/* slab ladder */
+.ladder { position: relative; height: 112px; margin: 6px 4px 0; }
+.lad-bar { position: absolute; left: 0; right: 0; top: 30px; height: 30px; display: flex; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); }
+.lad-bar i { display: grid; place-items: center; min-width: 0; overflow: hidden; font-style: normal; font-size: 0.6875rem; font-weight: 700; background: var(--seg); color: var(--segt); }
+.lad-ticks { position: absolute; left: 0; right: 0; top: 90px; height: 16px; }
+.lad-ticks span { position: absolute; transform: translateX(-50%); font-size: 0.6875rem; color: var(--muted); }
+.mk { position: absolute; width: 0; }
+.mk-now { top: 22px; height: 38px; border-left: 2px solid var(--ink); }
+.mk-now .lab { position: absolute; bottom: 100%; white-space: nowrap; font-size: var(--fs-xs); font-weight: 700; padding-bottom: 1px; }
+.mk-proj { top: 61px; }
+.mk-proj .tri { position: absolute; left: -5px; top: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 7px solid var(--ink); }
+.mk-proj .lab { position: absolute; top: 8px; white-space: nowrap; font-size: var(--fs-xs); font-weight: 700; }
+.mk .lab.c { left: 0; transform: translateX(-50%); }
+.mk .lab.l { left: -2px; }
+.mk .lab.r { right: -2px; }
+
+.notes { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.notes li { font-size: var(--fs-sm); padding-left: 14px; position: relative; }
+.notes li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--elec-fill); }
+.notes li.w::before { background: var(--warn); }
+
+.tbl { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+th, td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-weight: 600; font-size: var(--fs-xs); }
+tfoot td { font-weight: 700; }
+tr.total td { border-bottom: 0; font-size: var(--fs-base); }
+
+/* gas burner choice */
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.choice {
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 10px;
+  padding: 12px; text-align: left; cursor: pointer; font-family: var(--font-body); display: grid; gap: 2px;
+}
+.choice b { font-family: var(--font-display); font-size: var(--fs-lg); }
+.choice span { font-size: var(--fs-sm); color: var(--muted); }
+.choice[aria-pressed="true"] { border-color: var(--gas); box-shadow: 0 0 0 2px var(--gas); background: var(--surface); }
+
+/* history */
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: var(--fs-sm); color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: baseline; }
+.bars { display: flex; align-items: flex-end; gap: 10px; height: 190px; padding-top: 8px; }
+.bcol { flex: 1; min-width: 0; display: grid; grid-template-rows: 1fr auto auto; justify-items: center; height: 100%; gap: 4px; }
+.bstack { align-self: end; width: 70%; max-width: 44px; display: flex; flex-direction: column; justify-content: flex-end; border-radius: 4px 4px 0 0; overflow: hidden; }
+.bstack i { display: block; }
+.bval { font-size: var(--fs-xs); font-weight: 700; }
+.bmon { font-size: var(--fs-xs); color: var(--muted); }
+.hrow { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.hrow:last-child { border-bottom: 0; }
+.hrow .a { font-weight: 600; }
+.hrow .b { font-weight: 700; text-align: right; }
+.hrow .c { font-size: var(--fs-sm); color: var(--muted); }
+.hrow .d { font-size: var(--fs-sm); text-align: right; }
+.up { color: var(--warn); }
+.down { color: var(--good); }
+
+/* rates */
+.rrow { display: grid; grid-template-columns: 1fr minmax(130px, 40%); gap: 10px; align-items: center; padding: 6px 0; }
+.rrow label { font-size: var(--fs-sm); }
+.rin { display: grid; gap: 2px; }
+.rin input { height: 42px; }
+.rin span { font-size: var(--fs-xs); color: var(--muted); }
+.gh { font-size: var(--fs-xs); font-weight: 700; color: var(--muted); letter-spacing: 0.04em; padding-top: 8px; }
+
+/* tab bar */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding: 6px max(16px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.tabbar-in { max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.tab {
+  border: 0; background: transparent; color: var(--muted); display: grid; justify-items: center; gap: 2px;
+  padding: 6px 2px; border-radius: 10px; cursor: pointer; font-family: var(--font-body); font-size: var(--fs-xs); font-weight: 600;
+}
+.tab svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tab[aria-current="page"] { color: var(--ink); background: var(--bg); }
+.tab[aria-current="page"] svg { stroke: var(--elec); }
+.tab[data-tab="gas"][aria-current="page"] svg { stroke: var(--gas); }
+
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%); z-index: 30;
+  bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px;
+  font-size: var(--fs-sm); font-weight: 600; max-width: calc(100% - 32px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .toast { transition: opacity .2s; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>বিল আন্দাজ</h1>
+      <p class="sub" id="todayLine"></p>
+    </div>
+    <span class="stamp">রেট কার্যকর<br>১ জুন ২০২৬</span>
+  </header>
+
+  <main>
+    <!-- বিদ্যুৎ -->
+    <section id="p-elec" class="panel" aria-labelledby="t-elec">
+      <div class="card">
+        <h2 id="t-elec">বিদ্যুতের মিটার রিডিং</h2>
+        <p class="note" id="sampleNote">নমুনা রিডিং বসানো আছে। নিজের মিটারের রিডিং লিখলে হিসাব বদলে যাবে।</p>
+        <div class="row2">
+          <div class="field"><label for="r0">মাসের শুরুর রিডিং</label><input id="r0" inputmode="decimal" autocomplete="off"></div>
+          <div class="field"><label for="r1">এখনকার রিডিং</label><input id="r1" inputmode="decimal" autocomplete="off"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="d0">শুরুর তারিখ</label><input id="d0" type="date"></div>
+          <div class="field"><label for="d1">আজকের তারিখ</label><input id="d1" type="date"></div>
+        </div>
+        <div class="field"><label for="load">অনুমোদিত লোড (কিলোওয়াট)</label><input id="load" inputmode="decimal" autocomplete="off"></div>
+      </div>
+      <div id="elecOut" class="out"></div>
+    </section>
+
+    <!-- গ্যাস -->
+    <section id="p-gas" class="panel" aria-labelledby="t-gas" hidden>
+      <div class="card">
+        <h2 id="t-gas">গ্যাস বিল</h2>
+        <div class="seg" id="gmode" role="group" aria-label="গ্যাস সংযোগের ধরন">
+          <button type="button" data-m="fixed" aria-pressed="true">চুলাভিত্তিক</button>
+          <button type="button" data-m="meter" aria-pressed="false">মিটারযুক্ত</button>
+        </div>
+        <div id="gFixed" class="choices" role="group" aria-label="চুলার সংখ্যা">
+          <button type="button" class="choice" data-b="single" aria-pressed="false"><b id="gs-amt"></b><span>একটি চুলা</span></button>
+          <button type="button" class="choice" data-b="double" aria-pressed="true"><b id="gd-amt"></b><span>দুটি চুলা</span></button>
+        </div>
+        <div id="gMeter" hidden>
+          <div class="row2">
+            <div class="field"><label for="g0">আগের রিডিং (ঘনমিটার)</label><input id="g0" inputmode="decimal" autocomplete="off"></div>
+            <div class="field"><label for="g1">এখনকার রিডিং (ঘনমিটার)</label><input id="g1" inputmode="decimal" autocomplete="off"></div>
+          </div>
+        </div>
+      </div>
+      <div id="gasOut" class="out"></div>
+    </section>
+
+    <!-- ইতিহাস -->
+    <section id="p-hist" class="panel" aria-labelledby="t-hist" hidden>
+      <div class="card">
+        <h2 id="t-hist">মাসের পর মাসের খরচ</h2>
+        <div id="histOut"></div>
+      </div>
+    </section>
+
+    <!-- রেট -->
+    <section id="p-rates" class="panel" aria-labelledby="t-rates" hidden>
+      <div class="card">
+        <h2 id="t-rates">রেট ও চার্জ</h2>
+        <p class="note">সরকার রেট বদলালে এখানে ঠিক করে নিন। সব হিসাব সঙ্গে সঙ্গে বদলে যাবে।</p>
+        <div id="ratesForm"></div>
+        <button type="button" class="btn ghost" id="ratesReset">ডিফল্ট রেটে ফিরুন</button>
+        <p class="note">সূত্র: বিইআরসির ৩ জুন ২০২৬ সালের আদেশ। পরদিন ৭৫ ইউনিট পর্যন্ত বাড়তি দাম প্রত্যাহার করা হয়েছে, তাই প্রথম দুই ধাপে আগের রেট রাখা আছে। ৭৬ থেকে ৬০০ ইউনিটের ধাপের রেট একটি বিল-ক্যালকুলেটর সাইট থেকে নেওয়া, আপনার আসল বিলের সঙ্গে মিলিয়ে নিন। মিটারযুক্ত গ্যাসের রেট যাচাই করা হয়নি। এটি আনুমানিক হিসাব, আসল বিল বিতরণ কোম্পানির মিটার ও চার্জের ওপর নির্ভর করে।</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav class="tabbar" aria-label="প্রধান মেনু">
+  <div class="tabbar-in">
+    <button type="button" class="tab" data-tab="elec" aria-current="page">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>বিদ্যুৎ
+    </button>
+    <button type="button" class="tab" data-tab="gas">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3.3 2-4.5.3 1.6 1.2 2.4 2 2.5C11.5 8 11 5.5 12 3z"/></svg>গ্যাস
+    </button>
+    <button type="button" class="tab" data-tab="hist">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>ইতিহাস
+    </button>
+    <button type="button" class="tab" data-tab="rates">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>রেট
+    </button>
+  </div>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /*CALC-START*/
+  var BN = '০১২৩৪৫৬৭৮৯';
+  function toBn(s) { return String(s).replace(/\d/g, function (d) { return BN[+d]; }); }
+  function fmt(n, dec) {
+    dec = dec || 0;
+    return toBn(Number(n).toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }));
+  }
+  function taka(n, dec) { return '৳' + fmt(n, dec); }
+  function parse(s) {
+    if (s == null) return NaN;
+    var t = String(s).replace(/[০-৯]/g, function (d) { return BN.indexOf(d); }).replace(/[,\s৳]/g, '').replace('।', '.');
+    if (t === '') return NaN;
+    var v = Number(t);
+    return isFinite(v) ? v : NaN;
+  }
+
+  var BOUNDS = [75, 200, 300, 400, 600, Infinity];
+  var SLAB_LABELS = ['১–৭৫', '৭৬–২০০', '২০১–৩০০', '৩০১–৪০০', '৪০১–৬০০', '৬০১+'];
+  var DEF_RATES = { lifeline: 4.63, slabRates: [5.26, 8.50, 9.10, 9.62, 15.01, 17.35], demand: 42, vat: 5, gasSingle: 990, gasDouble: 1080, gasMeter: 16 };
+
+  function elecCalc(units, r, kw) {
+    units = Math.max(0, units);
+    var rows = [], energy = 0, prev = 0, i, take, amt;
+    if (units > 0 && units <= 50) {
+      energy = units * r.lifeline;
+      rows.push({ label: 'লাইফলাইন (১–৫০)', units: units, rate: r.lifeline, amt: energy });
+    } else {
+      for (i = 0; i < BOUNDS.length; i++) {
+        take = Math.max(0, Math.min(units, BOUNDS[i]) - prev);
+        if (take > 0) {
+          amt = take * r.slabRates[i];
+          energy += amt;
+          rows.push({ label: SLAB_LABELS[i], units: take, rate: r.slabRates[i], amt: amt });
+        }
+        prev = BOUNDS[i];
+        if (units <= BOUNDS[i]) break;
+      }
+    }
+    var demand = r.demand * kw;
+    var sub = energy + demand;
+    var vat = sub * r.vat / 100;
+    return { rows: rows, energy: energy, demand: demand, vat: vat, total: sub + vat };
+  }
+  function slabIndex(units) {
+    for (var i = 0; i < BOUNDS.length; i++) { if (units <= BOUNDS[i]) return i; }
+    return BOUNDS.length - 1;
+  }
+  /*CALC-END*/
+
+  var MONTHS = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+  var STEP_N = 6;
+
+  function $(s) { return document.querySelector(s); }
+  function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
+  function isoDate(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function parseISO(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || '');
+    return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+  }
+  function dayDiff(a, b) { return Math.round((b - a) / 86400000); }
+  function dim(d) { return new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); }
+  function keyOf(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
+  function labelOfKey(k) { var p = k.split('-'); return MONTHS[+p[1] - 1] + ' ' + toBn(p[0]); }
+  function shortOfKey(k) { return MONTHS[+k.split('-')[1] - 1]; }
+
+  /* ---------- state ---------- */
+  var KEY = 'bill-andaj-v1';
+  function loadStore() { try { var raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } }
+  var saved = loadStore() || {};
+  var today = new Date();
+  var rates = JSON.parse(JSON.stringify(DEF_RATES));
+  if (saved.rates && typeof saved.rates === 'object') {
+    Object.keys(DEF_RATES).forEach(function (k) {
+      if (k === 'slabRates') {
+        if (Array.isArray(saved.rates.slabRates) && saved.rates.slabRates.length === 6 && saved.rates.slabRates.every(function (x) { return typeof x === 'number' && isFinite(x) && x >= 0; })) rates.slabRates = saved.rates.slabRates.slice();
+      } else if (typeof saved.rates[k] === 'number' && isFinite(saved.rates[k]) && saved.rates[k] >= 0) {
+        rates[k] = saved.rates[k];
+      }
+    });
+  }
+  var si = saved.inputs || {};
+  var state = {
+    rates: rates,
+    history: Array.isArray(saved.history) ? saved.history.filter(function (e) { return e && typeof e.key === 'string'; }) : [],
+    inputs: {
+      r0: si.r0 || '4820', r1: si.r1 || '4967',
+      d0: isoDate(new Date(today.getFullYear(), today.getMonth(), 1)), d1: isoDate(today),
+      load: si.load || '1', burner: si.burner === 'single' ? 'single' : 'double',
+      gmode: si.gmode === 'meter' ? 'meter' : 'fixed', g0: si.g0 || '1240', g1: si.g1 || '1262',
+      basis: si.basis === 'now' ? 'now' : 'proj',
+      sample: si.sample === false ? false : !(si.r0 || si.r1)
+    },
+    tab: 'elec'
+  };
+  function persist() {
+    try {
+      var i = state.inputs;
+      localStorage.setItem(KEY, JSON.stringify({
+        rates: state.rates, history: state.history,
+        inputs: { r0: i.r0, r1: i.r1, load: i.load, burner: i.burner, gmode: i.gmode, g0: i.g0, g1: i.g1, basis: i.basis, sample: i.sample }
+      }));
+    } catch (e) { /* storage unavailable */ }
+  }
+
+  var toastTimer = null;
+  function toast(msg) {
+    var t = $('#toast');
+    t.textContent = msg; t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.hidden = true; }, 2200);
+  }
+
+  /* ---------- electricity ---------- */
+  function elecModel() {
+    var i = state.inputs, r = state.rates;
+    var r0 = parse(i.r0), r1 = parse(i.r1), kw = parse(i.load);
+    var d0 = parseISO(i.d0), d1 = parseISO(i.d1);
+    if (isNaN(r0) || isNaN(r1)) return { error: 'দুটি রিডিংই সংখ্যায় লিখুন।' };
+    if (r1 < r0) return { error: 'এখনকার রিডিং আগের রিডিংয়ের চেয়ে কম হতে পারে না।' };
+    if (!d0 || !d1) return { error: 'দুটি তারিখই বেছে নিন।' };
+    if (d1 < d0) return { error: 'আজকের তারিখ শুরুর তারিখের আগে হতে পারে না।' };
+    if (isNaN(kw) || kw < 0) return { error: 'অনুমোদিত লোড কিলোওয়াটে লিখুন, যেমন ১।' };
+    var units = r1 - r0;
+    var total = dim(d0);
+    var elapsed = Math.min(dayDiff(d0, d1) + 1, total);
+    var perDay = units / elapsed;
+    var proj = elapsed >= total ? units : perDay * total;
+    return {
+      units: units, total: total, elapsed: elapsed, remDays: total - elapsed, perDay: perDay, proj: proj, kw: kw, d0: d0,
+      now: elecCalc(units, r, kw), end: elecCalc(proj, r, kw)
+    };
+  }
+
+  function drumHTML(units) {
+    var t = Math.round(units * 10);
+    var tenth = t % 10;
+    var whole = Math.floor(t / 10);
+    var s = String(whole).padStart(5, '0').slice(-5);
+    var out = '<div class="drum" role="img" aria-label="এ পর্যন্ত ' + fmt(units, 1) + ' ইউনিট">';
+    for (var i = 0; i < s.length; i++) out += '<span>' + BN[+s[i]] + '</span>';
+    return out + '<span class="tenth">' + BN[tenth] + '</span></div>';
+  }
+
+  function ladderHTML(units, proj) {
+    var max = Math.max(700, Math.ceil(Math.max(units, proj) * 1.1 / 100) * 100);
+    var prev = 0, segs = '', ticks = '', i, end;
+    for (i = 0; i < BOUNDS.length; i++) {
+      end = BOUNDS[i] === Infinity ? max : BOUNDS[i];
+      segs += '<i style="width:' + ((end - prev) / max * 100) + '%;--seg:var(--seg' + (i + 1) + ');--segt:var(--segt' + (i + 1) + ')">' + fmt(state.rates.slabRates[i], 2) + '</i>';
+      if (BOUNDS[i] !== Infinity) ticks += '<span style="left:' + (BOUNDS[i] / max * 100) + '%">' + fmt(BOUNDS[i]) + '</span>';
+      prev = end;
+    }
+    function pos(u) { return Math.max(0, Math.min(100, u / max * 100)); }
+    function al(p) { return p > 78 ? 'r' : (p < 22 ? 'l' : 'c'); }
+    var pn = pos(units), pp = pos(proj);
+    return '<div class="ladder" role="img" aria-label="স্ল্যাব সিঁড়ি: এখন ' + fmt(units) + ' ইউনিট, মাস শেষে প্রায় ' + fmt(proj) + ' ইউনিট">' +
+      '<div class="lad-bar">' + segs + '</div>' +
+      '<div class="mk mk-now" style="left:' + pn + '%"><span class="lab ' + al(pn) + '">এখন ' + fmt(units) + '</span></div>' +
+      '<div class="mk mk-proj" style="left:' + pp + '%"><span class="tri"></span><span class="lab ' + al(pp) + '">মাস শেষে ~' + fmt(proj) + '</span></div>' +
+      '<div class="lad-ticks">' + ticks + '</div></div>';
+  }
+
+  function breakdownHTML(c) {
+    var h = '<div class="tbl"><table><thead><tr><th>ধাপ</th><th>ইউনিট</th><th>রেট</th><th>টাকা</th></tr></thead><tbody>';
+    c.rows.forEach(function (x) {
+      h += '<tr><td>' + x.label + '</td><td>' + fmt(x.units, 1) + '</td><td>' + fmt(x.rate, 2) + '</td><td>' + fmt(x.amt, 2) + '</td></tr>';
+    });
+    h += '<tr><td>ডিমান্ড চার্জ</td><td></td><td></td><td>' + fmt(c.demand, 2) + '</td></tr>';
+    h += '<tr><td>ভ্যাট (' + fmt(state.rates.vat, 0) + '%)</td><td></td><td></td><td>' + fmt(c.vat, 2) + '</td></tr>';
+    h += '</tbody><tfoot><tr class="total"><td>মোট</td><td></td><td></td><td>' + taka(c.total, 2) + '</td></tr></tfoot></table></div>';
+    return h;
+  }
+
+  function renderElectric() {
+    var out = $('#elecOut');
+    $('#sampleNote').hidden = !state.inputs.sample;
+    var m = elecModel();
+    if (m.error) { out.innerHTML = '<div class="card"><p class="err" role="alert">' + m.error + '</p></div>'; return; }
+    var r = state.rates, idx = slabIndex(m.units), notes = '';
+
+    if (m.units > 0 && m.units <= 50) {
+      notes += '<li class="w">৫০ ইউনিটের বেশি হলে লাইফলাইন রেট (' + fmt(r.lifeline, 2) + ') আর পাবেন না। তখন পুরো ব্যবহারে ' + fmt(r.slabRates[0], 2) + ' টাকার ধাপ লাগবে।</li>';
+    }
+    if (idx < BOUNDS.length - 1) {
+      var rem = Math.max(0, Math.ceil(BOUNDS[idx] - m.units));
+      notes += '<li>পরের ধাপে যেতে আর <b>' + fmt(rem) + '</b> ইউনিট বাকি। তখন প্রতি ইউনিটের দাম ' + fmt(r.slabRates[idx], 2) + ' থেকে ' + fmt(r.slabRates[idx + 1], 2) + ' টাকা হবে।</li>';
+      if (m.remDays > 0) {
+        var T = BOUNDS[idx];
+        if (m.proj > T) {
+          var x = Math.max(0, (T - m.units) / m.remDays);
+          notes += '<li class="w">এই হারে চললে মাস শেষে ' + fmt(T) + ' ইউনিট পার হবে। এড়াতে বাকি ' + fmt(m.remDays) + ' দিনে দৈনিক গড় ' + fmt(x, 1) + ' ইউনিটের বেশি নয় (এখন ' + fmt(m.perDay, 1) + ')।</li>';
+        } else {
+          notes += '<li>এই হারে চললে মাস শেষেও একই ধাপে থাকবেন।</li>';
+        }
+      }
+    } else {
+      notes += '<li class="w">আপনি সর্বোচ্চ রেটের ধাপে (৬০১+ ইউনিট) আছেন।</li>';
+    }
+
+    var basis = state.inputs.basis;
+    var c = basis === 'now' ? m.now : m.end;
+    out.innerHTML =
+      '<div class="card">' +
+        '<div class="drum-wrap">' + drumHTML(m.units) + '<span class="cap">এ পর্যন্ত ব্যবহার, ইউনিট (লাল ঘরটি দশমাংশ)</span></div>' +
+        '<div class="kpis">' +
+          '<div class="kpi"><div class="l">এ পর্যন্ত বিল</div><div class="v">' + taka(m.now.total) + '</div><div class="s">' + fmt(m.elapsed) + ' দিনে</div></div>' +
+          '<div class="kpi big"><div class="l">মাস শেষে আনুমানিক</div><div class="v">' + taka(m.end.total) + '</div><div class="s">দৈনিক গড় ' + fmt(m.perDay, 1) + ' ইউনিট, মোট ~' + fmt(m.proj) + '</div></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="card"><h3>স্ল্যাব সিঁড়ি</h3>' + ladderHTML(m.units, m.proj) + '<ul class="notes">' + notes + '</ul></div>' +
+      '<div class="card"><div class="seg" role="group" aria-label="হিসাবের ভিত্তি">' +
+        '<button type="button" data-basis="now" aria-pressed="' + (basis === 'now') + '">এ পর্যন্ত</button>' +
+        '<button type="button" data-basis="proj" aria-pressed="' + (basis === 'proj') + '">মাস শেষে</button></div>' +
+        breakdownHTML(c) +
+        '<button type="button" class="btn" id="saveElec">এই মাসের বিল ইতিহাসে রাখুন</button>' +
+      '</div>';
+  }
+
+  /* ---------- gas ---------- */
+  function gasModel() {
+    var i = state.inputs, r = state.rates;
+    if (i.gmode === 'fixed') {
+      var amt = i.burner === 'single' ? r.gasSingle : r.gasDouble;
+      return { mode: 'fixed', amount: amt };
+    }
+    var g0 = parse(i.g0), g1 = parse(i.g1);
+    if (isNaN(g0) || isNaN(g1)) return { error: 'দুটি রিডিংই সংখ্যায় লিখুন।' };
+    if (g1 < g0) return { error: 'এখনকার রিডিং আগের রিডিংয়ের চেয়ে কম হতে পারে না।' };
+    var u = g1 - g0;
+    return { mode: 'meter', units: u, rate: r.gasMeter, amount: u * r.gasMeter };
+  }
+  function renderGas() {
+    var i = state.inputs, r = state.rates;
+    $('#gs-amt').textContent = taka(r.gasSingle);
+    $('#gd-amt').textContent = taka(r.gasDouble);
+    $$('#gFixed .choice').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-b') === i.burner)); });
+    $$('#gmode button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-m') === i.gmode)); });
+    $('#gFixed').hidden = i.gmode !== 'fixed';
+    $('#gMeter').hidden = i.gmode !== 'meter';
+    var out = $('#gasOut'), m = gasModel();
+    if (m.error) { out.innerHTML = '<div class="card"><p class="err" role="alert">' + m.error + '</p></div>'; return; }
+    var h = '<div class="card"><div class="kpis">';
+    if (m.mode === 'fixed') {
+      h += '<div class="kpi gas"><div class="l">মাসিক বিল</div><div class="v">' + taka(m.amount) + '</div></div>' +
+           '<div class="kpi"><div class="l">বছরে</div><div class="v">' + taka(m.amount * 12) + '</div><div class="s">দিনে গড় ' + taka(m.amount / 30, 1) + '</div></div></div>' +
+           '<p class="note">চুলাভিত্তিক বিল ব্যবহারের ওপর নির্ভর করে না। বছরে ১২টি বিল ধরা হয়েছে।</p>';
+    } else {
+      h += '<div class="kpi gas"><div class="l">আনুমানিক বিল</div><div class="v">' + taka(m.amount, 2) + '</div></div>' +
+           '<div class="kpi"><div class="l">ব্যবহার</div><div class="v">' + fmt(m.units, 1) + '</div><div class="s">ঘনমিটার × ' + taka(m.rate, 2) + '</div></div></div>' +
+           '<p class="note">রেটটি রেট ট্যাবে বদলানো যায়। নিজের বিলের রেটের সঙ্গে মিলিয়ে নিন।</p>';
+    }
+    h += '<button type="button" class="btn" id="saveGas">এই মাসের গ্যাস বিল ইতিহাসে রাখুন</button></div>';
+    out.innerHTML = h;
+  }
+
+  /* ---------- history ---------- */
+  function sampleHistory() {
+    var arr = [], vals = [[1180, 1080], [1325, 1080], [1010, 1080]], k;
+    for (k = 3; k >= 1; k--) {
+      var d = new Date(today.getFullYear(), today.getMonth() - k, 1);
+      arr.push({ key: keyOf(d), elec: vals[3 - k][0], gas: vals[3 - k][1] });
+    }
+    return arr;
+  }
+  function renderHistory() {
+    var real = state.history.slice().sort(function (a, b) { return a.key < b.key ? -1 : 1; });
+    var isSample = real.length === 0;
+    var list = isSample ? sampleHistory() : real;
+    var shown = list.slice(-6);
+    var tot = function (e) { return (e.elec || 0) + (e.gas || 0); };
+    var max = Math.max.apply(null, shown.map(tot).concat([1]));
+    var h = '';
+    if (isSample) h += '<p class="note"><span class="chip">নমুনা তথ্য</span> বিদ্যুৎ বা গ্যাস ট্যাব থেকে মাসের বিল রাখলে এখানে আপনার নিজের হিসাব দেখা যাবে।</p>';
+    h += '<div class="legend"><span><i style="background:var(--elec-fill)"></i>বিদ্যুৎ</span><span><i style="background:var(--gas)"></i>গ্যাস</span></div>';
+    h += '<div class="bars" role="img" aria-label="মাসভিত্তিক বিলের চার্ট">';
+    shown.forEach(function (e) {
+      var H = 120;
+      h += '<div class="bcol"><div class="bstack" style="height:' + (tot(e) / max * H) + 'px">' +
+        (e.elec ? '<i style="height:' + (e.elec / tot(e) * 100) + '%;background:var(--elec-fill)"></i>' : '') +
+        (e.gas ? '<i style="height:' + (e.gas / tot(e) * 100) + '%;background:var(--gas)"></i>' : '') +
+        '</div><span class="bval">' + fmt(tot(e)) + '</span><span class="bmon">' + shortOfKey(e.key) + '</span></div>';
+    });
+    h += '</div><div>';
+    list.slice().reverse().forEach(function (e, idx, rev) {
+      var prev = rev[idx + 1], d = '';
+      if (prev) {
+        var diff = tot(e) - tot(prev);
+        if (diff > 0) d = '<span class="up">আগের মাসের চেয়ে ' + taka(diff) + ' বেশি</span>';
+        else if (diff < 0) d = '<span class="down">আগের মাসের চেয়ে ' + taka(-diff) + ' কম</span>';
+        else d = '<span>আগের মাসের সমান</span>';
+      }
+      h += '<div class="hrow"><span class="a">' + labelOfKey(e.key) + '</span><span class="b">' + taka(tot(e)) + '</span>' +
+        '<span class="c">বিদ্যুৎ ' + (e.elec ? taka(e.elec) : '–') + ' · গ্যাস ' + (e.gas ? taka(e.gas) : '–') + '</span><span class="d">' + d + '</span></div>';
+    });
+    h += '</div>';
+    if (!isSample) h += '<button type="button" class="btn ghost danger" id="histClear">সব ইতিহাস মুছুন</button>';
+    $('#histOut').innerHTML = h;
+  }
+  function saveEntry(kind, amount) {
+    var d0 = parseISO(state.inputs.d0) || today;
+    var key = keyOf(d0);
+    var e = state.history.filter(function (x) { return x.key === key; })[0];
+    if (!e) { e = { key: key }; state.history.push(e); }
+    e[kind] = Math.round(amount);
+    persist(); renderHistory();
+    toast(labelOfKey(key) + ' মাসের ' + (kind === 'elec' ? 'বিদ্যুৎ' : 'গ্যাস') + ' বিল রাখা হয়েছে');
+  }
+
+  /* ---------- rates ---------- */
+  function rateRow(id, label, unit, val) {
+    return '<div class="rrow"><label for="rt-' + id + '">' + label + '</label><div class="rin"><input id="rt-' + id + '" data-k="' + id + '" inputmode="decimal" autocomplete="off" value="' + toBn(val) + '"><span>' + unit + '</span></div></div>';
+  }
+  function buildRates() {
+    var r = state.rates, h = '<div class="gh">বিদ্যুৎ, প্রতি ইউনিট</div>';
+    h += rateRow('lifeline', 'লাইফলাইন (মোট ব্যবহার ৫০ বা কম)', 'টাকা', r.lifeline);
+    SLAB_LABELS.forEach(function (l, i) { h += rateRow('slab' + i, l + ' ইউনিট', 'টাকা', r.slabRates[i]); });
+    h += '<div class="gh">বিদ্যুৎ, অন্যান্য</div>';
+    h += rateRow('demand', 'ডিমান্ড চার্জ', 'টাকা/কিলোওয়াট', r.demand);
+    h += rateRow('vat', 'ভ্যাট', 'শতাংশ', r.vat);
+    h += '<div class="gh">গ্যাস</div>';
+    h += rateRow('gasSingle', 'একটি চুলা (মাসিক)', 'টাকা', r.gasSingle);
+    h += rateRow('gasDouble', 'দুটি চুলা (মাসিক)', 'টাকা', r.gasDouble);
+    h += rateRow('gasMeter', 'মিটারযুক্ত, প্রতি ঘনমিটার', 'টাকা', r.gasMeter);
+    $('#ratesForm').innerHTML = h;
+  }
+  function setRate(k, v) {
+    var r = state.rates;
+    if (k.indexOf('slab') === 0) r.slabRates[+k.slice(4)] = v; else r[k] = v;
+  }
+
+  /* ---------- wiring ---------- */
+  function renderAll() { renderElectric(); renderGas(); renderHistory(); }
+
+  function showTab(name) {
+    state.tab = name;
+    ['elec', 'gas', 'hist', 'rates'].forEach(function (t) { $('#p-' + t).hidden = t !== name; });
+    $$('.tab').forEach(function (b) {
+      if (b.getAttribute('data-tab') === name) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    });
+    window.scrollTo(0, 0);
+  }
+  $$('.tab').forEach(function (b) { b.addEventListener('click', function () { showTab(b.getAttribute('data-tab')); }); });
+
+  ['r0', 'r1', 'd0', 'd1', 'load', 'g0', 'g1'].forEach(function (id) {
+    var el = document.getElementById(id);
+    el.value = (id === 'd0' || id === 'd1') ? state.inputs[id] : toBn(state.inputs[id]);
+    el.addEventListener('input', function () {
+      state.inputs[id] = el.value;
+      if (id === 'r0' || id === 'r1') state.inputs.sample = false;
+      persist();
+      if (id === 'g0' || id === 'g1') renderGas(); else renderElectric();
+    });
+  });
+
+  $('#elecOut').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    if (b.hasAttribute('data-basis')) { state.inputs.basis = b.getAttribute('data-basis'); persist(); renderElectric(); return; }
+    if (b.id === 'saveElec') {
+      var m = elecModel();
+      if (!m.error) saveEntry('elec', m.end.total);
+    }
+  });
+  $('#gasOut').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (b && b.id === 'saveGas') { var m = gasModel(); if (!m.error) saveEntry('gas', m.amount); }
+  });
+  $$('#gFixed .choice').forEach(function (b) {
+    b.addEventListener('click', function () { state.inputs.burner = b.getAttribute('data-b'); persist(); renderGas(); });
+  });
+  $$('#gmode button').forEach(function (b) {
+    b.addEventListener('click', function () { state.inputs.gmode = b.getAttribute('data-m'); persist(); renderGas(); });
+  });
+
+  function twoStep(btn, idleText, action) {
+    var armed = false, timer = null;
+    btn.addEventListener('click', function () {
+      if (!armed) {
+        armed = true; btn.textContent = 'নিশ্চিত? আবার চাপুন';
+        timer = setTimeout(function () { armed = false; btn.textContent = idleText; }, 4000);
+      } else {
+        clearTimeout(timer); armed = false; btn.textContent = idleText; action();
+      }
+    });
+  }
+  $('#histOut').addEventListener('click', function (e) {
+    var b = e.target.closest('#histClear');
+    if (!b || b.getAttribute('data-armed')) {
+      if (b) { clearTimeout(+b.getAttribute('data-timer')); state.history = []; persist(); renderHistory(); toast('ইতিহাস মোছা হয়েছে'); }
+      return;
+    }
+    b.setAttribute('data-armed', '1'); b.textContent = 'নিশ্চিত? আবার চাপুন';
+    b.setAttribute('data-timer', String(setTimeout(function () {
+      if (document.body.contains(b)) { b.removeAttribute('data-armed'); b.textContent = 'সব ইতিহাস মুছুন'; }
+    }, 4000)));
+  });
+
+  $('#ratesForm').addEventListener('input', function (e) {
+    var el = e.target;
+    if (!el.getAttribute('data-k')) return;
+    var v = parse(el.value);
+    if (isNaN(v) || v < 0) return;
+    setRate(el.getAttribute('data-k'), v);
+    persist(); renderAll();
+  });
+  twoStep($('#ratesReset'), 'ডিফল্ট রেটে ফিরুন', function () {
+    state.rates = JSON.parse(JSON.stringify(DEF_RATES));
+    persist(); buildRates(); renderAll(); toast('রেট ডিফল্টে ফিরেছে');
+  });
+
+  $('#todayLine').textContent = 'আজ ' + toBn(today.getDate()) + ' ' + MONTHS[today.getMonth()] + ' ' + toBn(today.getFullYear());
+  buildRates();
+  renderAll();
+})();
+</script>
+</body>
+</html>
